@@ -25,21 +25,11 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
     
     if(F.getName() == "main"){
         // Accessing global variables in the module
-        Module &M = *F.getParent(); // The parent module of the function
-        for (GlobalVariable &GV : M.globals()) {
-            llvm::errs() << "Global Variable: " << GV.getName() << "\n";
-            
-            // Example: If the global variable is a constant string, print its value
-            if (GV.getType()->isPointerTy() && GV.getValueType()->isArrayTy() && GV.getValueType()->getArrayElementType()->isIntegerTy(8)) {
-                Constant *C = dyn_cast<Constant>(GV.getInitializer());
-                if (C) {
-                    llvm::errs() << "Global Variable Initializer: " << *C << "\n";
-                }
-            }
-        }
 
         auto FirstBB = F.begin();
         IRBuilder<> builder(&(*FirstBB));
+
+
         llvm::Type* i8Type = llvm::Type::getInt8Ty(F.getContext());
         PointerType * i8PtrType = PointerType::getUnqual(i8Type);
         FunctionType *zenoProtectFuncType = FunctionType::get(i8PtrType, {i8PtrType, builder.getInt64Ty()}, true);
@@ -50,6 +40,21 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
             // printf function doesn't exist, create it
             FunctionType *printfFuncType = FunctionType::get(builder.getInt32Ty(), {i8PtrType}, true);
             printfFunc = Function::Create(printfFuncType, Function::ExternalLinkage, "printf", F.getParent());
+        }
+
+        // Insert Namespaces for Global Variables
+        Module &M = *F.getParent(); // The parent module of the function
+        for (GlobalVariable &GV : M.globals()) {
+            llvm::errs() << "Global Variable: " << GV.getName() << "\n";
+            
+            // Example: If the global variable is a constant string, print its value
+            if (GV.getType()->isPointerTy() && GV.getValueType()->isArrayTy() && GV.getValueType()->getArrayElementType()->isIntegerTy(8)) {
+                Constant *C = dyn_cast<Constant>(GV.getInitializer());
+                if (C) {
+                    llvm::errs() << "Global Variable Initializer: " << *C << "\n";
+                    // Value *newAlloca = builder.CreateAlloca(GV.getValueType(), nullptr, "UNPROTECTED_GLOBAL");
+                }
+            }
         }
 
         Value *arrStr = builder.CreateGlobalStringPtr("Executing ZENO_PROTECT on Array %p with size: %d\n");
