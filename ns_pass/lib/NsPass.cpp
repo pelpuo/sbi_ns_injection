@@ -184,6 +184,31 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
                         // Value *allocaNamePtr = builder.CreateGlobalStringPtr(allocaName);
                         // builder.CreateCall(printfFunc, {strStr, allocaNamePtr, builder.getInt32(structSize)});
                     }
+                    // else if(allocatedType->isPointerTy()){
+                    //     // llvm::DataLayout DL = F.getParent()->getDataLayout();
+                    //     // StructType *structType = cast<StructType>(allocatedType);
+                    //     // unsigned structSize = DL.getTypeAllocSize(structType);
+
+                    //     builder.SetInsertPoint(&I);
+                    //     Value *newAlloca = builder.CreateAlloca(allocatedType, nullptr, "UNPROTECTED_PTR");
+
+                    //     PointerType* structTypePtr = allocatedType->getPointerTo();
+
+                    //     llvm::Type* i8Type = llvm::Type::getInt8Ty(BB.getContext());
+                    //     PointerType * i8PtrType = PointerType::getUnqual(i8Type);
+                    //     Value* structPtr1 = builder.CreateBitCast(newAlloca, PointerType::getUnqual(i8Type));
+                    //     Value* protectedPtr = builder.CreateCall(zenoProtectFunc, {structPtr1, builder.getInt64(4)});
+                        
+                    //     Value* arrayPtr2 = builder.CreateBitCast(protectedPtr, structTypePtr);
+                        
+
+                    //     llvm::StringRef allocaName = allocaInst->getName();
+                    //     allocaInst->replaceAllUsesWith(arrayPtr2);
+                    //     allocaInst->removeFromParent();
+                    //     arrayPtr2->setName(allocaName);
+
+                    // }
+                    // llvm::outs() << "AllocaInst Address: " << allocaInstAddress << "\n";
                 }
             }
         }
