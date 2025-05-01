@@ -20,7 +20,7 @@ entry:
   %local_str = alloca ptr, align 8
   %local_arr = alloca [5 x i32], align 16
   %empty_arr = alloca [5 x i32], align 16
-  %empty_str = alloca [10 x ptr], align 16
+  %empty_str = alloca [10 x i8], align 1
   store i32 0, ptr %retval, align 4
   store ptr @.str.2, ptr %local_str, align 8
   call void @llvm.memcpy.p0.p0.i64(ptr align 16 %local_arr, ptr align 16 @__const.main.local_arr, i64 20, i1 false)
@@ -41,7 +41,6 @@ declare void @llvm.memcpy.p0.p0.i64(ptr noalias nocapture writeonly, ptr noalias
 
 declare dso_local i32 @printf(ptr noundef, ...) #2
 
-attributes #0 = { noinline nounwind optnone uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { nocallback nofree nounwind willreturn memory(argmem: readwrite) }
 attributes #2 = { "frame-pointer"="all" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 

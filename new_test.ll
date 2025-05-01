@@ -17,22 +17,24 @@ target triple = "x86_64-unknown-linux-gnu"
 
 define dso_local i32 @main() {
 entry:
+  %prot.i8 = call ptr @zeno_protect(ptr @global_str, i64 8)
+  %prot.i81 = call ptr @zeno_protect(ptr @global_arr, i64 20)
   %retval = alloca i32, align 4
   %local_str = alloca ptr, align 8
   %UNPROTECTED_PTR = alloca [5 x i32], align 4
-  %local_arr = call ptr (ptr, i64, ...) @zeno_protect(ptr %UNPROTECTED_PTR, i64 20)
-  %UNPROTECTED_PTR1 = alloca [5 x i32], align 4
-  %empty_arr = call ptr (ptr, i64, ...) @zeno_protect(ptr %UNPROTECTED_PTR1, i64 20)
-  %UNPROTECTED_PTR2 = alloca [10 x ptr], align 8
-  %empty_str = call ptr (ptr, i64, ...) @zeno_protect(ptr %UNPROTECTED_PTR2, i64 0)
+  %local_arr = call ptr @zeno_protect(ptr %UNPROTECTED_PTR, i64 20)
+  %UNPROTECTED_PTR2 = alloca [5 x i32], align 4
+  %empty_arr = call ptr @zeno_protect(ptr %UNPROTECTED_PTR2, i64 20)
+  %UNPROTECTED_PTR3 = alloca [10 x i8], align 1
+  %empty_str = call ptr @zeno_protect(ptr %UNPROTECTED_PTR3, i64 10)
   store i32 0, ptr %retval, align 4
   store ptr @.str.2, ptr %local_str, align 8
   call void @llvm.memcpy.p0.p0.i64(ptr align 16 %local_arr, ptr align 16 @__const.main.local_arr, i64 20, i1 false)
-  %0 = load ptr, ptr @global_str, align 8
+  %0 = load ptr, ptr %prot.i8, align 8
   %call = call i32 (ptr, ...) @printf(ptr noundef @.str.3, ptr noundef %0)
   %1 = load ptr, ptr %local_str, align 8
   %call1 = call i32 (ptr, ...) @printf(ptr noundef @.str.3, ptr noundef %1)
-  %2 = load i32, ptr @global_arr, align 16
+  %2 = load i32, ptr %prot.i81, align 16
   %call2 = call i32 (ptr, ...) @printf(ptr noundef @.str.4, i32 noundef %2)
   %arrayidx = getelementptr inbounds [5 x i32], ptr %local_arr, i64 0, i64 0
   %3 = load i32, ptr %arrayidx, align 16
@@ -45,7 +47,7 @@ declare void @llvm.memcpy.p0.p0.i64(ptr noalias nocapture writeonly, ptr noalias
 
 declare dso_local i32 @printf(ptr noundef, ...) #1
 
-declare ptr @zeno_protect(ptr, i64, ...)
+declare ptr @zeno_protect(ptr, i64)
 
 attributes #0 = { nocallback nofree nounwind willreturn memory(argmem: readwrite) }
 attributes #1 = { "frame-pointer"="all" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

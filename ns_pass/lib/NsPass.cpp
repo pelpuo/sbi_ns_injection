@@ -32,30 +32,85 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
 
         llvm::Type* i8Type = llvm::Type::getInt8Ty(F.getContext());
         PointerType * i8PtrType = PointerType::getUnqual(i8Type);
-        FunctionType *zenoProtectFuncType = FunctionType::get(i8PtrType, {i8PtrType, builder.getInt64Ty()}, true);
-        Function *zenoProtectFunc = Function::Create(zenoProtectFuncType, Function::ExternalLinkage, "zeno_protect", F.getParent());
+        // FunctionType *zenoProtectFuncType = FunctionType::get(i8PtrType, {i8PtrType, builder.getInt64Ty()}, true);
+        // Function *zenoProtectFunc = Function::Create(zenoProtectFuncType, Function::ExternalLinkage, "zeno_protect", F.getParent());
        
-        Function *printfFunc = F.getParent()->getFunction("printf");
-        if (!printfFunc) {
-            // printf function doesn't exist, create it
-            FunctionType *printfFuncType = FunctionType::get(builder.getInt32Ty(), {i8PtrType}, true);
-            printfFunc = Function::Create(printfFuncType, Function::ExternalLinkage, "printf", F.getParent());
-        }
+        // Function *printfFunc = F.getParent()->getFunction("printf");
+        // if (!printfFunc) {
+        //     // printf function doesn't exist, create it
+        //     FunctionType *printfFuncType = FunctionType::get(builder.getInt32Ty(), {i8PtrType}, true);
+        //     printfFunc = Function::Create(printfFuncType, Function::ExternalLinkage, "printf", F.getParent());
+        // }
+
+        FunctionCallee printfFunc = F.getParent()->getOrInsertFunction(
+            "printf",
+            FunctionType::get(builder.getInt32Ty(), {i8PtrType}, true)
+        );
+
+        
 
         // Insert Namespaces for Global Variables
         Module &M = *F.getParent(); // The parent module of the function
+
+        auto &Ctx = M.getContext();
+        auto &DL  = M.getDataLayout();
+        Type *i8Ty   = Type::getInt8Ty(Ctx);
+        Type *i64Ty  = Type::getInt64Ty(Ctx);
+        auto *i8PtrT = PointerType::getUnqual(i8Ty);
+
+        FunctionCallee zenoProtectFunc =
+        M.getOrInsertFunction("zeno_protect",
+                                FunctionType::get(i8PtrT, {i8PtrT, i64Ty}, false));
+
+
+        builder.SetInsertPoint(&(*FirstBB->getFirstInsertionPt()));
+
         for (GlobalVariable &GV : M.globals()) {
-            llvm::errs() << "Global Variable: " << GV.getName() << "\n";
-            
-            // Example: If the global variable is a constant string, print its value
-            if (GV.getType()->isPointerTy() && GV.getValueType()->isArrayTy() && GV.getValueType()->getArrayElementType()->isIntegerTy(8)) {
-                Constant *C = dyn_cast<Constant>(GV.getInitializer());
-                if (C) {
-                    llvm::errs() << "Global Variable Initializer: " << *C << "\n";
-                    // Value *newAlloca = builder.CreateAlloca(GV.getValueType(), nullptr, "UNPROTECTED_GLOBAL");
-                }
+            // 1) skip externals & constant‐only globals (string literals, etc.)
+            // if (GV.isDeclaration() || GV.isConstant())
+            if (GV.isDeclaration() || !GV.getType()->isPointerTy() || GV.isConstant())
+                continue;
+          
+            // 2) bitcast to i8*
+            Value *OrigPtr = builder.CreateBitCast(&GV, i8PtrT, "orig.i8");
+          
+            // 3) call zeno_protect
+            uint64_t SizeInBytes = DL.getTypeAllocSize(GV.getValueType());
+            CallInst *ci = builder.CreateCall(
+                zenoProtectFunc, { OrigPtr, builder.getInt64(SizeInBytes) },
+                "prot.i8");
+          
+            // 4) cast back to the original pointer‐to‐GV type
+            Value *protPtr = builder.CreateBitCast(ci, GV.getType(), "prot.ptr");
+          
+            // 5) only replace uses in real IR instructions
+            SmallVector<Use*, 8> ToReplace;
+            for (Use &U : GV.uses()) {
+              if (Instruction *UserI = dyn_cast<Instruction>(U.getUser())) {
+                if (UserI == ci) continue;
+                ToReplace.push_back(&U);
+              }
             }
-        }
+            for (Use *UP : ToReplace)
+              *UP = protPtr;
+          }
+
+
+
+        // for (GlobalVariable &GV : M.globals()) {
+        //     llvm::errs() << "Global Variable: " << GV.getName() << "\n";
+            
+        //     // Example: If the global variable is a constant string, print its value
+
+        //     if (GV.getType()->isPointerTy() && GV.getValueType()->isArrayTy() && GV.getValueType()->getArrayElementType()->isIntegerTy(8)) {
+        //         Constant *C = dyn_cast<Constant>(GV.getInitializer());
+        //         if (C) {
+        //             llvm::errs() << "Global Variable Initializer: " << *C << "\n";
+        //             Value *newAlloca = builder.CreateAlloca(GV.getValueType(), nullptr, "GLOBAL");
+        //             // GV.replaceAllUsesWith(newAlloca);
+        //         }
+        //     }
+        // }
 
         Value *arrStr = builder.CreateGlobalStringPtr("Executing ZENO_PROTECT on Array %p with size: %d\n");
         Value *strStr = builder.CreateGlobalStringPtr("Executing ZENO_PROTECT on Struct %p with size: %d\n");
@@ -72,7 +127,11 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
 
                     if (allocatedType->isArrayTy()) {
                         unsigned arraySize = cast<ArrayType>(allocatedType)->getNumElements();
-                        unsigned arrayElemSize = cast<ArrayType>(allocatedType)->getArrayElementType()->getPrimitiveSizeInBits()/8;
+
+                        Type *ET  = cast<ArrayType>(allocatedType)->getElementType();
+                        uint64_t arrayElemSize = DL.getTypeAllocSize(ET);
+                        
+                        // unsigned arrayElemSize = cast<ArrayType>(allocatedType)->getArrayElementType()->getPrimitiveSizeInBits()/8;
                         Type * arrayElemType = cast<ArrayType>(allocatedType)->getArrayElementType();
 
                         builder.SetInsertPoint(&I);
@@ -89,6 +148,9 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
 
                         llvm::StringRef allocaName = allocaInst->getName();
                         // arrayPtr2->setName(allocaInst->getName());
+
+                        llvm::outs() << "Array Name: " << allocaName.str() << ", Size: " << arraySize << ", ElemSize: " << arrayElemSize << "\n";
+
                         allocaInst->replaceAllUsesWith(arrayPtr2);
                         allocaInst->removeFromParent();
                         arrayPtr2->setName(allocaName);
@@ -97,7 +159,7 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
                         // builder.CreateCall(printfFunc, {arrStr, allocaNamePtr, builder.getInt32(arraySize)});
 
                     }else if(allocatedType->isStructTy()){
-                        llvm::DataLayout DL = F.getParent()->getDataLayout();
+                        // llvm::DataLayout DL = F.getParent()->getDataLayout();
                         StructType *structType = cast<StructType>(allocatedType);
                         unsigned structSize = DL.getTypeAllocSize(structType);
 
@@ -112,7 +174,7 @@ PreservedAnalyses NsPass::run(Function &F, FunctionAnalysisManager &AM) {
                         Value* protectedPtr = builder.CreateCall(zenoProtectFunc, {structPtr1, builder.getInt64(structSize)});
                         
                         Value* arrayPtr2 = builder.CreateBitCast(protectedPtr, structTypePtr);
-
+                        
 
                         llvm::StringRef allocaName = allocaInst->getName();
                         allocaInst->replaceAllUsesWith(arrayPtr2);

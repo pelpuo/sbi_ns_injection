@@ -9,7 +9,7 @@ int main(void) {
     int local_arr[] = {6, 7, 8, 9, 10};
 
     int empty_arr[5];
-    char *empty_str[10];
+    char empty_str[10];
 
     printf("%s", global_str);
     printf("%s", local_str);
