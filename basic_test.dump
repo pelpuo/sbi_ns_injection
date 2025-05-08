@@ -1,0 +1,22 @@
+
+basic_test:	file format elf64-littleriscv
+
+Disassembly of section .text:
+
+00000000000100b0 <main>:
+   100b0: 13 01 01 fd  	addi	sp, sp, -48
+   100b4: 7b 30 11 02  	<unknown>
+   100b8: 7b 54 11 02  	<unknown>
+   100bc: 7b 38 81 00  	<unknown>
+   100c0: 7b 5c 81 00  	<unknown>
+   100c4: 13 04 01 03  	addi	s0, sp, 48
+   100c8: 03 74 01 00  	<unknown>
+   100cc: 13 05 00 00  	mv	a0, zero
+   100d0: 7b 2e a4 fc  	<unknown>
+   100d4: 13 05 30 02  	addi	a0, zero, 35
+   100d8: 77 34 01 01  	<unknown>
+   100dc: 77 74 81 01  	<unknown>
+   100e0: f7 30 01 02  	<unknown>
+   100e4: f7 70 81 02  	<unknown>
+   100e8: 13 01 01 03  	addi	sp, sp, 48
+   100ec: 67 80 00 00  	ret
