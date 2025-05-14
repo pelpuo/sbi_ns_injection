@@ -10,8 +10,8 @@ export CFLAGS=" --target=riscv64-unknown-elf \
                 -mabi=lp64 -nostdlib \
                 -I${MUSL_ROOT}/include"
 export LDFLAGS=" -static -fuse-ld=${LLVM_ROOT}/bin/ld.lld --sysroot=${MUSL_ROOT} -rtlib=compiler-rt"
-$CC $CFLAGS -S -emit-llvm -o basic_test_2.ll basic_test.c
-# $CC $CFLAGS -O0 -S -o basic_test_2.s basic_test_2.ll
+# $CC $CFLAGS -S -emit-llvm -o basic_test_2.ll basic_test.c
+$CC $CFLAGS -O0 -S -o basic_test.s basic_test.c
 
 # ${LLVM_ROOT}/bin/llvm-objdump --disassemble -S basic_test > basic_test.dump
 

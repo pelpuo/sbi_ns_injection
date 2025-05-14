@@ -9,12 +9,15 @@
 //     return x;
 // }
 
-#include <stdio.h>
+// #include <stdio.h>
 
 int fib(int n) {
     if (n <= 1)
         return n;
     return fib(n - 1) + fib(n - 2);
+    // int tmp1 = fib(n - 1);
+    // int tmp2 = fib(n - 2);
+    // return tmp1 + tmp2;
 }
 
 int main() {

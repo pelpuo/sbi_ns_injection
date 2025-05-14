@@ -26,14 +26,13 @@ fib:
 	elw	a0, -40(s0)
 	addiw	a0, a0, -1
 	call	fib
-	esd	a0, -48(s0)
-	ese	e10, -40(s0)
+	esw	a0, -44(s0)
 	elw	a0, -40(s0)
 	addiw	a0, a0, -2
 	call	fib
-	mv	a1, a0
-	eld	a0, -48(s0)
-	ele	e10, -40(s0)
+	esw	a0, -48(s0)
+	elw	a0, -44(s0)
+	elw	a1, -48(s0)
 	add	a0, a0, a1
 	esw	a0, -36(s0)
 	j	.LBB0_3
@@ -93,7 +92,7 @@ main:
 	.asciz	"Fibonacci number at position %d is %d\n"
 	.size	.L.str, 39
 
-	.ident	"clang version 13.0.0 (https://github.com/stamcenter/llvm-zeno/ 98f7e444dda642334a1ef3d86120923f496aa7f2)"
+	.ident	"clang version 13.0.0 (http://gitlab.ascslab-members.org/bgas-zeno/zeno-llvm.git 3fac6b4a2d59f6454bdce7e9b75f593e8347af5b)"
 	.section	".note.GNU-stack","",@progbits
 	.addrsig
 	.addrsig_sym fib
