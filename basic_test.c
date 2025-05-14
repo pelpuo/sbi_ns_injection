@@ -1,5 +1,12 @@
+// int alt(){
+//     return 10;
+// }
+
 // int main(){
-//     return 35;
+//     int x;
+//     x = alt();
+//     printf("%d\n", x);
+//     return x;
 // }
 
 #include <stdio.h>
