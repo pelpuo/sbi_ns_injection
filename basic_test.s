@@ -26,13 +26,14 @@ fib:
 	elw	a0, -40(s0)
 	addiw	a0, a0, -1
 	call	fib
-	esw	a0, -44(s0)
+	esd	a0, -48(s0)
+	ese	e10, -40(s0)
 	elw	a0, -40(s0)
 	addiw	a0, a0, -2
 	call	fib
-	esw	a0, -48(s0)
-	elw	a0, -44(s0)
-	elw	a1, -48(s0)
+	mv	a1, a0
+	eld	a0, -48(s0)
+	ele	e10, -40(s0)
 	add	a0, a0, a1
 	esw	a0, -36(s0)
 	j	.LBB0_3
