@@ -7,6 +7,7 @@ OUTPUT_DIR="./bin"
 
 # Compiler
 COMPILER="riscv64-linux-gnu-gcc"
+# COMPILER="gcc"
 
 # Ensure the output directory exists
 mkdir -p "$OUTPUT_DIR"
