@@ -1,51 +1,108 @@
 ; ModuleID = './bin/uaf_memcpy'
 source_filename = "./bin/uaf_memcpy"
 
-@.rodata13 = private unnamed_addr constant [137 x i8] c"\01\00\02\00\00\00\00\00hello!\00\00a contains: %s\0A\0A\00\00\00\00\00\00\00\00a: %p\0A\00\00b: %p\0A\0A\00RANDOMSTRING\00\00\00\00b contains: %s\0A\0A\00\00\00\00\00\00\00\00Test Failed: Use After Free using memcpy\00", align 8
-
-define dso_local i32 @main() {
-  %1 = call ptr @malloc(i64 16)
-  %2 = alloca ptr, align 8
-  store ptr %1, ptr %2, align 8
-  %3 = load ptr, ptr %2, align 8
-  %4 = call ptr @memcpy(ptr %3, ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 8), i64 16)
-  %5 = load ptr, ptr %2, align 8
-  %6 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 16), ptr %5, i32 16)
-  %7 = load ptr, ptr %2, align 8
-  %8 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 40), ptr %7, i32 16)
-  %9 = load ptr, ptr %2, align 8
-  call void @free(ptr %9)
-  %10 = call ptr @malloc(i64 10)
-  %11 = alloca ptr, align 8
-  store ptr %10, ptr %11, align 8
-  %12 = load ptr, ptr %11, align 8
-  %13 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 48), ptr %12, i32 16)
-  %14 = load ptr, ptr %2, align 8
-  %15 = call ptr @memcpy(ptr %14, ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 56), i64 16)
-  %16 = load ptr, ptr %2, align 8
-  %17 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 16), ptr %16, i32 16)
-  %18 = load ptr, ptr %11, align 8
-  %19 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 72), ptr %18, i32 16)
-  %20 = load ptr, ptr %2, align 8
-  %21 = load i8, ptr %20, align 1
-  %22 = sext i8 %21 to i64
-  %23 = icmp ne i64 %22, 82
-  br i1 %23, label %26, label %24
-
-24:                                               ; preds = %0
-  %25 = call i32 @puts(ptr getelementptr inbounds ([137 x i8], ptr @.rodata13, i64 0, i32 96))
-  br label %26
-
-26:                                               ; preds = %0, %24
-  ret i32 0
-}
+@rodata_15 = private unnamed_addr constant [115 x i8] c"\01\00\02\00hello!\00a contains: %s\0A\0A\00a: %p\0A\00b: %p\0A\0A\00RANDOMSTRING\00b contains: %s\0A\0A\00Test Failed: Use After Free using memcpy\0A\00", align 4, !ROData_SecInfo !0
 
 declare dso_local ptr @malloc(i64)
-
-declare dso_local ptr @memcpy(ptr, ptr, i64)
 
 declare dso_local i32 @printf(ptr, ...)
 
 declare dso_local void @free(ptr)
 
-declare dso_local i32 @puts(ptr)
+define dso_local i32 @main() {
+entry:
+  %stktop_8 = alloca i8, i32 40, align 1
+  %tos = ptrtoint ptr %stktop_8 to i64
+  %0 = add i64 %tos, 16
+  %RBP_N.24 = inttoptr i64 %0 to ptr
+  %1 = add i64 %tos, 24
+  %RBP_N.16 = inttoptr i64 %1 to ptr
+  %2 = add i64 %tos, 36
+  %RBP_N.4 = inttoptr i64 %2 to ptr
+  %3 = add i64 %tos, 0
+  %RSP_P.0 = inttoptr i64 %3 to ptr
+  store i64 3735928559, ptr %RSP_P.0, align 8
+  %RBP = ptrtoint ptr %RSP_P.0 to i64
+  store i32 0, ptr %RBP_N.4, align 1
+  %4 = zext i32 16 to i64
+  %5 = call ptr @malloc(i64 %4)
+  %RAX = ptrtoint ptr %5 to i64
+  store i64 %RAX, ptr %RBP_N.16, align 1
+  %memload = load i64, ptr %RBP_N.16, align 1
+  %memload1 = load i64, ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 4), align 1, !ROData_Content !1
+  %6 = inttoptr i64 %memload to ptr
+  store i64 %memload1, ptr %6, align 1
+  %memload2 = load i64, ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 12), align 1, !ROData_Content !2
+  %memref-disp = add i64 %memload, 8
+  %7 = inttoptr i64 %memref-disp to ptr
+  store i64 %memload2, ptr %7, align 1
+  %memload3 = load i64, ptr %RBP_N.16, align 1
+  %EAX = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 11), i64 %memload3)
+  %memload4 = load i64, ptr %RBP_N.16, align 1
+  %EAX5 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 28), i64 %memload4)
+  %memload6 = load i64, ptr %RBP_N.16, align 1
+  %8 = inttoptr i64 %memload6 to ptr
+  call void @free(ptr %8)
+  %9 = zext i32 10 to i64
+  %10 = call ptr @malloc(i64 %9)
+  %RAX7 = ptrtoint ptr %10 to i64
+  store i64 %RAX7, ptr %RBP_N.24, align 1
+  %memload8 = load i64, ptr %RBP_N.24, align 1
+  %EAX9 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 35), i64 %memload8)
+  %memload10 = load i64, ptr %RBP_N.16, align 1
+  %memload11 = load i64, ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 43), align 1, !ROData_Content !3
+  %11 = inttoptr i64 %memload10 to ptr
+  store i64 %memload11, ptr %11, align 1
+  %memload12 = load i64, ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 51), align 1, !ROData_Content !4
+  %memref-disp13 = add i64 %memload10, 8
+  %12 = inttoptr i64 %memref-disp13 to ptr
+  store i64 %memload12, ptr %12, align 1
+  %memload14 = load i64, ptr %RBP_N.16, align 1
+  %EAX15 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 11), i64 %memload14)
+  %memload16 = load i64, ptr %RBP_N.24, align 1
+  %EAX17 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 56), i64 %memload16)
+  %memload18 = load i64, ptr %RBP_N.16, align 1
+  %13 = inttoptr i64 %memload18 to ptr
+  %memload19 = load i32, ptr %13, align 1
+  %14 = trunc i32 %memload19 to i8
+  %EAX20 = sext i8 %14 to i32
+  %15 = sub i32 %EAX20, 82
+  %16 = call { i32, i1 } @llvm.usub.with.overflow.i32(i32 %EAX20, i32 82)
+  %CF = extractvalue { i32, i1 } %16, 1
+  %ZF = icmp eq i32 %15, 0
+  %highbit = and i32 -2147483648, %15
+  %SF = icmp ne i32 %highbit, 0
+  %17 = call { i32, i1 } @llvm.ssub.with.overflow.i32(i32 %EAX20, i32 82)
+  %OF = extractvalue { i32, i1 } %17, 1
+  %18 = and i32 %15, 255
+  %19 = call i32 @llvm.ctpop.i32(i32 %18)
+  %20 = and i32 %19, 1
+  %PF = icmp eq i32 %20, 0
+  %CmpZF_JNE = icmp eq i1 %ZF, false
+  br i1 %CmpZF_JNE, label %bb.2, label %bb.1
+
+bb.1:                                             ; preds = %entry
+  %EAX21 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 73))
+  br label %bb.2
+
+bb.2:                                             ; preds = %bb.1, %entry
+  %memload22 = load i32, ptr %RBP_N.4, align 1
+  ret i32 %memload22
+}
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i32, i1 } @llvm.usub.with.overflow.i32(i32, i32) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i32, i1 } @llvm.ssub.with.overflow.i32(i32, i32) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare i32 @llvm.ctpop.i32(i32) #0
+
+attributes #0 = { nocallback nofree nosync nounwind readnone speculatable willreturn }
+
+!0 = !{i64 4202496}
+!1 = !{ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 4)}
+!2 = !{ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 12)}
+!3 = !{ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 43)}
+!4 = !{ptr getelementptr inbounds ([115 x i8], ptr @rodata_15, i32 0, i32 51)}

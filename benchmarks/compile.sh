@@ -6,8 +6,10 @@ TEMPORAL_DIR="./temporal_safety"
 OUTPUT_DIR="./bin"
 
 # Compiler
-COMPILER="riscv64-linux-gnu-gcc"
+# COMPILER="riscv64-unknown-elf-gcc"
 # COMPILER="gcc"
+# COMPILER="clang --target=riscv64-unknown-linux-gnu -march=rv64imafd -mabi=lp64d --gcc-toolchain=/opt/riscv_ima -O0 --sysroot=/opt/riscv_ima/sysroot"
+COMPILER="clang"
 
 # Ensure the output directory exists
 mkdir -p "$OUTPUT_DIR"

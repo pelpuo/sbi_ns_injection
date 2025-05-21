@@ -1,0 +1,373 @@
+; ModuleID = './bin/hbo_struct_array'
+source_filename = "./bin/hbo_struct_array"
+
+@rodata_15 = private unnamed_addr constant [152 x i8] c"\01\00\02\00Name%d\00b[0].name = %s, b[0].id = %d\0A\00Name0\00b[0].name is equal to \22Name0\22.\0A\00Test Failed: b[0].name is not equal to \22Name0\22.\0A\00aalkdaweouiadfkajdfk\0F'\00\00", align 4, !ROData_SecInfo !0
+
+declare dso_local ptr @malloc(i64)
+
+declare dso_local i32 @snprintf(ptr, i64, ptr, ...)
+
+declare dso_local i32 @printf(ptr, ...)
+
+declare dso_local ptr @memset(ptr, i32, i64)
+
+declare dso_local ptr @memcpy(ptr, ptr, i64)
+
+declare dso_local i32 @strcmp(ptr, ptr)
+
+declare dso_local void @free(ptr)
+
+define dso_local i32 @main() {
+entry:
+  %RCX-SKT-LOC = alloca i64, align 8
+  %stktop_8 = alloca i8, i32 88, align 1
+  %tos = ptrtoint ptr %stktop_8 to i64
+  %0 = add i64 %tos, 16
+  %RBP_N.72 = inttoptr i64 %0 to ptr
+  %1 = add i64 %tos, 24
+  %RBP_N.64 = inttoptr i64 %1 to ptr
+  %2 = add i64 %tos, 32
+  %RBP_N.56 = inttoptr i64 %2 to ptr
+  %3 = add i64 %tos, 40
+  %RBP_N.48 = inttoptr i64 %3 to ptr
+  %4 = add i64 %tos, 48
+  %RBP_N.40 = inttoptr i64 %4 to ptr
+  %5 = add i64 %tos, 60
+  %RBP_N.28 = inttoptr i64 %5 to ptr
+  %6 = add i64 %tos, 64
+  %RBP_N.24 = inttoptr i64 %6 to ptr
+  %7 = add i64 %tos, 72
+  %RBP_N.16 = inttoptr i64 %7 to ptr
+  %8 = add i64 %tos, 84
+  %RBP_N.4 = inttoptr i64 %8 to ptr
+  %9 = add i64 %tos, 0
+  %RSP_P.0 = inttoptr i64 %9 to ptr
+  store i64 3735928559, ptr %RSP_P.0, align 8
+  %RBP = ptrtoint ptr %RSP_P.0 to i64
+  store i32 0, ptr %RBP_N.4, align 1
+  %10 = zext i32 120 to i64
+  %11 = call ptr @malloc(i64 %10)
+  %RAX = ptrtoint ptr %11 to i64
+  store i64 %RAX, ptr %RBP_N.16, align 1
+  %12 = zext i32 120 to i64
+  %13 = call ptr @malloc(i64 %12)
+  %RAX1 = ptrtoint ptr %13 to i64
+  store i64 %RAX1, ptr %RBP_N.24, align 1
+  store i32 0, ptr %RBP_N.28, align 1
+  store i64 0, ptr %RCX-SKT-LOC, align 1
+  br label %bb.1
+
+bb.1:                                             ; preds = %entry, %bb.2
+  %14 = load i32, ptr %RBP_N.28, align 1
+  %15 = zext i32 %14 to i64
+  %16 = zext i32 5 to i64
+  %17 = sub i64 %15, %16
+  %18 = call { i64, i1 } @llvm.usub.with.overflow.i64(i64 %15, i64 %16)
+  %CF = extractvalue { i64, i1 } %18, 1
+  %ZF = icmp eq i64 %17, 0
+  %highbit = and i64 -9223372036854775808, %17
+  %SF = icmp ne i64 %highbit, 0
+  %19 = call { i64, i1 } @llvm.ssub.with.overflow.i64(i64 %15, i64 %16)
+  %OF = extractvalue { i64, i1 } %19, 1
+  %20 = and i64 %17, 255
+  %21 = call i64 @llvm.ctpop.i64(i64 %20)
+  %22 = and i64 %21, 1
+  %PF = icmp eq i64 %22, 0
+  %CmpSFOF_JGE = icmp eq i1 %SF, %OF
+  br i1 %CmpSFOF_JGE, label %bb.3, label %bb.2
+
+bb.2:                                             ; preds = %bb.1
+  %memload = load i64, ptr %RBP_N.24, align 1
+  %memload2 = load i64, ptr %RBP_N.28, align 1
+  %23 = trunc i64 %memload2 to i32
+  %RAX3 = sext i32 %23 to i64
+  %RAX5 = mul i64 %RAX3, 24
+  %24 = call { i64, i1 } @llvm.smul.with.overflow.i64(i64 %RAX3, i64 24)
+  %OF4 = extractvalue { i64, i1 } %24, 1
+  %RDI = add nsw i64 %memload, %RAX5
+  %highbit6 = and i64 -9223372036854775808, %RDI
+  %SF7 = icmp ne i64 %highbit6, 0
+  %ZF8 = icmp eq i64 %RDI, 0
+  %memload9 = load i32, ptr %RBP_N.28, align 1
+  %25 = inttoptr i64 %RDI to ptr
+  %26 = zext i32 20 to i64
+  %EAX = call i32 (ptr, i64, ptr, ...) @snprintf(ptr %25, i64 %26, ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 4), i32 %memload9)
+  %memload10 = load i32, ptr %RBP_N.28, align 1
+  %memload11 = load i64, ptr %RBP_N.24, align 1
+  %memload12 = load i64, ptr %RBP_N.28, align 1
+  %27 = trunc i64 %memload12 to i32
+  %RDX = sext i32 %27 to i64
+  %RDX14 = mul i64 %RDX, 24
+  %28 = call { i64, i1 } @llvm.smul.with.overflow.i64(i64 %RDX, i64 24)
+  %OF13 = extractvalue { i64, i1 } %28, 1
+  %RAX18 = add nsw i64 %memload11, %RDX14
+  %highbit15 = and i64 -9223372036854775808, %RAX18
+  %SF16 = icmp ne i64 %highbit15, 0
+  %ZF17 = icmp eq i64 %RAX18, 0
+  %memref-disp = add i64 %RAX18, 20
+  %29 = inttoptr i64 %memref-disp to ptr
+  store i32 %memload10, ptr %29, align 1
+  %memload19 = load i32, ptr %RBP_N.28, align 1
+  %EAX26 = add i32 %memload19, 1
+  %30 = call { i32, i1 } @llvm.uadd.with.overflow.i32(i32 %memload19, i32 1)
+  %CF20 = extractvalue { i32, i1 } %30, 1
+  %31 = and i32 %EAX26, 255
+  %32 = call i32 @llvm.ctpop.i32(i32 %31)
+  %33 = and i32 %32, 1
+  %PF21 = icmp eq i32 %33, 0
+  %ZF22 = icmp eq i32 %EAX26, 0
+  %highbit23 = and i32 -2147483648, %EAX26
+  %SF24 = icmp ne i32 %highbit23, 0
+  %34 = call { i32, i1 } @llvm.sadd.with.overflow.i32(i32 %memload19, i32 1)
+  %OF25 = extractvalue { i32, i1 } %34, 1
+  store i32 %EAX26, ptr %RBP_N.28, align 1
+  %35 = zext i32 %memload10 to i64
+  store i64 %35, ptr %RCX-SKT-LOC, align 1
+  br label %bb.1
+
+bb.3:                                             ; preds = %bb.1
+  %memload27 = load i64, ptr %RBP_N.24, align 1
+  %memload28 = load i64, ptr %RBP_N.24, align 1
+  %memref-disp29 = add i64 %memload28, 20
+  %36 = inttoptr i64 %memref-disp29 to ptr
+  %memload30 = load i32, ptr %36, align 1
+  %RCX = load i64, ptr %RCX-SKT-LOC, align 1
+  %EAX31 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 11), i64 %memload27, i32 %memload30, i64 %RCX)
+  %memload32 = load i64, ptr %RBP_N.24, align 1
+  %memload33 = load i64, ptr %RBP_N.16, align 1
+  %RCX40 = add i64 %memload33, 96
+  %37 = call { i64, i1 } @llvm.uadd.with.overflow.i64(i64 %memload33, i64 96)
+  %CF34 = extractvalue { i64, i1 } %37, 1
+  %38 = and i64 %RCX40, 255
+  %39 = call i64 @llvm.ctpop.i64(i64 %38)
+  %40 = and i64 %39, 1
+  %PF35 = icmp eq i64 %40, 0
+  %ZF36 = icmp eq i64 %RCX40, 0
+  %highbit37 = and i64 -9223372036854775808, %RCX40
+  %SF38 = icmp ne i64 %highbit37, 0
+  %41 = call { i64, i1 } @llvm.sadd.with.overflow.i64(i64 %memload33, i64 96)
+  %OF39 = extractvalue { i64, i1 } %41, 1
+  %RAX41 = sub i64 %memload32, %RCX40
+  %42 = call { i64, i1 } @llvm.usub.with.overflow.i64(i64 %memload32, i64 %RCX40)
+  %CF42 = extractvalue { i64, i1 } %42, 1
+  %ZF43 = icmp eq i64 %RAX41, 0
+  %highbit44 = and i64 -9223372036854775808, %RAX41
+  %SF45 = icmp ne i64 %highbit44, 0
+  %43 = call { i64, i1 } @llvm.ssub.with.overflow.i64(i64 %memload32, i64 %RCX40)
+  %OF46 = extractvalue { i64, i1 } %43, 1
+  %44 = and i64 %RAX41, 255
+  %45 = call i64 @llvm.ctpop.i64(i64 %44)
+  %46 = and i64 %45, 1
+  %PF47 = icmp eq i64 %46, 0
+  %RAX54 = sub i64 %RAX41, 16
+  %47 = call { i64, i1 } @llvm.usub.with.overflow.i64(i64 %RAX41, i64 16)
+  %CF48 = extractvalue { i64, i1 } %47, 1
+  %48 = and i64 %RAX54, 255
+  %49 = call i64 @llvm.ctpop.i64(i64 %48)
+  %50 = and i64 %49, 1
+  %PF49 = icmp eq i64 %50, 0
+  %ZF50 = icmp eq i64 %RAX54, 0
+  %highbit51 = and i64 -9223372036854775808, %RAX54
+  %SF52 = icmp ne i64 %highbit51, 0
+  %51 = call { i64, i1 } @llvm.ssub.with.overflow.i64(i64 %RAX41, i64 16)
+  %OF53 = extractvalue { i64, i1 } %51, 1
+  store i64 %RAX54, ptr %RBP_N.40, align 1
+  %memload55 = load i64, ptr %RBP_N.40, align 1
+  %RDI62 = add i64 %memload55, 24
+  %52 = call { i64, i1 } @llvm.uadd.with.overflow.i64(i64 %memload55, i64 24)
+  %CF56 = extractvalue { i64, i1 } %52, 1
+  %53 = and i64 %RDI62, 255
+  %54 = call i64 @llvm.ctpop.i64(i64 %53)
+  %55 = and i64 %54, 1
+  %PF57 = icmp eq i64 %55, 0
+  %ZF58 = icmp eq i64 %RDI62, 0
+  %highbit59 = and i64 -9223372036854775808, %RDI62
+  %SF60 = icmp ne i64 %highbit59, 0
+  %56 = call { i64, i1 } @llvm.sadd.with.overflow.i64(i64 %memload55, i64 24)
+  %OF61 = extractvalue { i64, i1 } %56, 1
+  %RDI69 = add i64 %RDI62, 16
+  %57 = call { i64, i1 } @llvm.uadd.with.overflow.i64(i64 %RDI62, i64 16)
+  %CF63 = extractvalue { i64, i1 } %57, 1
+  %58 = and i64 %RDI69, 255
+  %59 = call i64 @llvm.ctpop.i64(i64 %58)
+  %60 = and i64 %59, 1
+  %PF64 = icmp eq i64 %60, 0
+  %ZF65 = icmp eq i64 %RDI69, 0
+  %highbit66 = and i64 -9223372036854775808, %RDI69
+  %SF67 = icmp ne i64 %highbit66, 0
+  %61 = call { i64, i1 } @llvm.sadd.with.overflow.i64(i64 %RDI62, i64 16)
+  %OF68 = extractvalue { i64, i1 } %61, 1
+  %62 = call ptr @malloc(i64 %RDI69)
+  %RAX70 = ptrtoint ptr %62 to i64
+  store i64 %RAX70, ptr %RBP_N.48, align 1
+  %memload71 = load i64, ptr %RBP_N.48, align 1
+  %memload72 = load i64, ptr %RBP_N.40, align 1
+  %63 = inttoptr i64 %memload71 to ptr
+  %64 = call ptr @memset(ptr %63, i32 65, i64 %memload72)
+  %RAX73 = ptrtoint ptr %64 to i64
+  %memload74 = load i64, ptr %RBP_N.48, align 1
+  %memload75 = load i64, ptr %RBP_N.40, align 1
+  %memload76 = load i64, ptr %RBP_N.24, align 1
+  %memref-disp77 = add i64 %memload76, -16
+  %65 = inttoptr i64 %memref-disp77 to ptr
+  %memload78 = load i64, ptr %65, align 1
+  %memref-basereg = add i64 %memload74, %memload75
+  %66 = inttoptr i64 %memref-basereg to ptr
+  store i64 %memload78, ptr %66, align 1
+  %memref-disp79 = add i64 %memload76, -8
+  %67 = inttoptr i64 %memref-disp79 to ptr
+  %memload80 = load i64, ptr %67, align 1
+  %memref-basereg81 = add i64 %memload74, %memload75
+  %memref-disp82 = add i64 %memref-basereg81, 8
+  %68 = inttoptr i64 %memref-disp82 to ptr
+  store i64 %memload80, ptr %68, align 1
+  %memload83 = load i64, ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 128), align 1, !ROData_Content !1
+  store i64 %memload83, ptr %RBP_N.72, align 1
+  %memload84 = load i64, ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 136), align 1, !ROData_Content !2
+  store i64 %memload84, ptr %RBP_N.64, align 1
+  %memload85 = load i64, ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 144), align 1, !ROData_Content !3
+  store i64 %memload85, ptr %RBP_N.56, align 1
+  %memload86 = load i64, ptr %RBP_N.48, align 1
+  %memload87 = load i64, ptr %RBP_N.40, align 1
+  %memload88 = load i64, ptr %RBP_N.72, align 1
+  %memref-basereg89 = add i64 %memload86, %memload87
+  %memref-disp90 = add i64 %memref-basereg89, 16
+  %69 = inttoptr i64 %memref-disp90 to ptr
+  store i64 %memload88, ptr %69, align 1
+  %memload91 = load i64, ptr %RBP_N.64, align 1
+  %memref-basereg92 = add i64 %memload86, %memload87
+  %memref-disp93 = add i64 %memref-basereg92, 24
+  %70 = inttoptr i64 %memref-disp93 to ptr
+  store i64 %memload91, ptr %70, align 1
+  %memload94 = load i64, ptr %RBP_N.56, align 1
+  %memref-basereg95 = add i64 %memload86, %memload87
+  %memref-disp96 = add i64 %memref-basereg95, 32
+  %71 = inttoptr i64 %memref-disp96 to ptr
+  store i64 %memload94, ptr %71, align 1
+  %memload97 = load i64, ptr %RBP_N.16, align 1
+  %RDI104 = add i64 %memload97, 96
+  %72 = call { i64, i1 } @llvm.uadd.with.overflow.i64(i64 %memload97, i64 96)
+  %CF98 = extractvalue { i64, i1 } %72, 1
+  %73 = and i64 %RDI104, 255
+  %74 = call i64 @llvm.ctpop.i64(i64 %73)
+  %75 = and i64 %74, 1
+  %PF99 = icmp eq i64 %75, 0
+  %ZF100 = icmp eq i64 %RDI104, 0
+  %highbit101 = and i64 -9223372036854775808, %RDI104
+  %SF102 = icmp ne i64 %highbit101, 0
+  %76 = call { i64, i1 } @llvm.sadd.with.overflow.i64(i64 %memload97, i64 96)
+  %OF103 = extractvalue { i64, i1 } %76, 1
+  %memload105 = load i64, ptr %RBP_N.48, align 1
+  %memload106 = load i64, ptr %RBP_N.40, align 1
+  %RDX113 = add i64 %memload106, 24
+  %77 = call { i64, i1 } @llvm.uadd.with.overflow.i64(i64 %memload106, i64 24)
+  %CF107 = extractvalue { i64, i1 } %77, 1
+  %78 = and i64 %RDX113, 255
+  %79 = call i64 @llvm.ctpop.i64(i64 %78)
+  %80 = and i64 %79, 1
+  %PF108 = icmp eq i64 %80, 0
+  %ZF109 = icmp eq i64 %RDX113, 0
+  %highbit110 = and i64 -9223372036854775808, %RDX113
+  %SF111 = icmp ne i64 %highbit110, 0
+  %81 = call { i64, i1 } @llvm.sadd.with.overflow.i64(i64 %memload106, i64 24)
+  %OF112 = extractvalue { i64, i1 } %81, 1
+  %RDX120 = add i64 %RDX113, 16
+  %82 = call { i64, i1 } @llvm.uadd.with.overflow.i64(i64 %RDX113, i64 16)
+  %CF114 = extractvalue { i64, i1 } %82, 1
+  %83 = and i64 %RDX120, 255
+  %84 = call i64 @llvm.ctpop.i64(i64 %83)
+  %85 = and i64 %84, 1
+  %PF115 = icmp eq i64 %85, 0
+  %ZF116 = icmp eq i64 %RDX120, 0
+  %highbit117 = and i64 -9223372036854775808, %RDX120
+  %SF118 = icmp ne i64 %highbit117, 0
+  %86 = call { i64, i1 } @llvm.sadd.with.overflow.i64(i64 %RDX113, i64 16)
+  %OF119 = extractvalue { i64, i1 } %86, 1
+  %87 = inttoptr i64 %RDI104 to ptr
+  %88 = inttoptr i64 %memload105 to ptr
+  %89 = call ptr @memcpy(ptr %87, ptr %88, i64 %RDX120)
+  %RAX121 = ptrtoint ptr %89 to i64
+  %memload122 = load i64, ptr %RBP_N.24, align 1
+  %memload123 = load i64, ptr %RBP_N.24, align 1
+  %memref-disp124 = add i64 %memload123, 20
+  %90 = inttoptr i64 %memref-disp124 to ptr
+  %memload125 = load i32, ptr %90, align 1
+  %EAX126 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 11), i64 %memload122, i32 %memload125)
+  %memload127 = load i64, ptr %RBP_N.24, align 1
+  %91 = inttoptr i64 %memload127 to ptr
+  %EAX128 = call i32 @strcmp(ptr %91, ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 41))
+  %92 = sub i32 %EAX128, 0
+  %93 = call { i32, i1 } @llvm.usub.with.overflow.i32(i32 %EAX128, i32 0)
+  %CF129 = extractvalue { i32, i1 } %93, 1
+  %ZF130 = icmp eq i32 %92, 0
+  %highbit131 = and i32 -2147483648, %92
+  %SF132 = icmp ne i32 %highbit131, 0
+  %94 = call { i32, i1 } @llvm.ssub.with.overflow.i32(i32 %EAX128, i32 0)
+  %OF133 = extractvalue { i32, i1 } %94, 1
+  %95 = and i32 %92, 255
+  %96 = call i32 @llvm.ctpop.i32(i32 %95)
+  %97 = and i32 %96, 1
+  %PF134 = icmp eq i32 %97, 0
+  %CmpZF_JNE = icmp eq i1 %ZF130, false
+  br i1 %CmpZF_JNE, label %bb.5, label %bb.4
+
+bb.4:                                             ; preds = %bb.3
+  %EAX135 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 47))
+  br label %bb.6
+
+bb.5:                                             ; preds = %bb.3
+  %EAX136 = call i32 (ptr, ...) @printf(ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 79))
+  br label %bb.6
+
+bb.6:                                             ; preds = %bb.5, %bb.4
+  %memload137 = load i64, ptr %RBP_N.16, align 1
+  %98 = inttoptr i64 %memload137 to ptr
+  call void @free(ptr %98)
+  %memload138 = load i64, ptr %RBP_N.24, align 1
+  %99 = inttoptr i64 %memload138 to ptr
+  call void @free(ptr %99)
+  %memload139 = load i64, ptr %RBP_N.48, align 1
+  %100 = inttoptr i64 %memload139 to ptr
+  call void @free(ptr %100)
+  ret i32 0
+}
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i64, i1 } @llvm.usub.with.overflow.i64(i64, i64) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i64, i1 } @llvm.ssub.with.overflow.i64(i64, i64) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare i64 @llvm.ctpop.i64(i64) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i64, i1 } @llvm.smul.with.overflow.i64(i64, i64) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i32, i1 } @llvm.uadd.with.overflow.i32(i32, i32) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare i32 @llvm.ctpop.i32(i32) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i32, i1 } @llvm.sadd.with.overflow.i32(i32, i32) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i64, i1 } @llvm.uadd.with.overflow.i64(i64, i64) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i64, i1 } @llvm.sadd.with.overflow.i64(i64, i64) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i32, i1 } @llvm.usub.with.overflow.i32(i32, i32) #0
+
+; Function Attrs: nocallback nofree nosync nounwind readnone speculatable willreturn
+declare { i32, i1 } @llvm.ssub.with.overflow.i32(i32, i32) #0
+
+attributes #0 = { nocallback nofree nosync nounwind readnone speculatable willreturn }
+
+!0 = !{i64 4202496}
+!1 = !{ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 128)}
+!2 = !{ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 136)}
+!3 = !{ptr getelementptr inbounds ([152 x i8], ptr @rodata_15, i32 0, i32 144)}

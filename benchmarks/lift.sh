@@ -2,8 +2,8 @@
 
 # Directories containing source files
 BIN_DIR="./bin"
-# OUTPUT_DIR="./lifted"
-OUTPUT_DIR="./lifted_x86"
+OUTPUT_DIR="./lifted"
+# OUTPUT_DIR="./lifted_x86"
 
 INCLUDE_FILES="/usr/include/stdio.h,/usr/include/stdlib.h,/usr/include/string.h"
 
