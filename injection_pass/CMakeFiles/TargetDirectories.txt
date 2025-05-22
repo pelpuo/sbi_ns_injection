@@ -1,0 +1,7 @@
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/intrinsics_gen.dir
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/omp_gen.dir
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/acc_gen.dir
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/RISCVTargetParserTableGen.dir
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/NSInjectionPass.dir
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/edit_cache.dir
+/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/CMakeFiles/rebuild_cache.dir
