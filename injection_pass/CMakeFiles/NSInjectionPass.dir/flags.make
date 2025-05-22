@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DNSInjectionPass_EXPORTS
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/local/ASUAD/ekayang/Documents/LLVM/llvm-15/llvm-project/llvm/include -I/home/local/ASUAD/ekayang/Documents/LLVM/llvm-15/llvm-project/build/include
 
-CXX_FLAGS = -fPIC   -D_GNU_SOURCE -D_DEBUG -D_GLIBCXX_ASSERTIONS -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+CXX_FLAGS = -O3 -DNDEBUG -fPIC   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
 

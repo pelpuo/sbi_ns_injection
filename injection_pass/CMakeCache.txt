@@ -22,7 +22,7 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
-CMAKE_BUILD_TYPE:STRING=
+CMAKE_BUILD_TYPE:STRING=Release
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -192,8 +192,8 @@ LIBXML2_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libxml2.so
 //Path to a program.
 LIBXML2_XMLLINT_EXECUTABLE:FILEPATH=LIBXML2_XMLLINT_EXECUTABLE-NOTFOUND
 
-//The directory containing a CMake configuration file for LLVM.
-LLVM_DIR:PATH=/usr/local/lib/cmake/llvm
+//No help, variable specified on the command line.
+LLVM_DIR:UNINITIALIZED=/home/local/ASUAD/ekayang/Documents/LLVM/llvm-15/llvm-project/build/lib/cmake/llvm
 
 //Value Computed by CMake
 NSInjectionPass_BINARY_DIR:STATIC=/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass

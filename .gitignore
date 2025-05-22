@@ -1,3 +1,8 @@
 build
 rodata_pass/build
 injection_pass/build
+heap_pass/CMakeFiles
+heap_pass/CMakeCache.txt
+heap_pass/cmake_install.cmake
+heap_pass/Makefile
+benchmarks/protected_bc

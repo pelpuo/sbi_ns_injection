@@ -1,1 +1,1 @@
-/usr/bin/c++ -fPIC -shared  -o NSInjectionPass.so CMakeFiles/NSInjectionPass.dir/NSInjectionPass.cpp.o 
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -shared  -o NSInjectionPass.so CMakeFiles/NSInjectionPass.dir/NSInjectionPass.cpp.o 
