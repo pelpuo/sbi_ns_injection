@@ -8,7 +8,8 @@ OUTPUT_DIR="./lifted"
 INCLUDE_FILES="/usr/include/stdio.h,/usr/include/stdlib.h,/usr/include/string.h"
 
 # Compiler
-MCTOLL="/home/local/ASUAD/ekayang/Documents/LLVM/llvm-8/llvm-project/build/bin/llvm-mctoll"
+# MCTOLL="/home/local/ASUAD/ekayang/Documents/LLVM/llvm-8/llvm-project/build/bin/llvm-mctoll"
+MCTOLL="/home/local/ASUAD/ekayang/Documents/LLVM/llvm-mctoll/llvm-project/build/bin/llvm-mctoll"
 
 # Ensure the output directory exists
 mkdir -p "$OUTPUT_DIR"
