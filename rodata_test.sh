@@ -34,7 +34,7 @@ echo ""
   --load-pass-plugin=./rodata_pass/build/SplitRodataPass.so \
   --load-pass-plugin=/home/local/ASUAD/ekayang/Documents/Github/sbi_ns_injection/injection_pass/NSInjectionPass.so \
  --passes="split-rodata,function(ns-reorder)" \
- benchmarks/lifted/oobr_direct_index_integer.ll \
+ benchmarks/lifted/oobr_direct_index_string.ll \
  -o rodata_test.bc
 
 echo ""
